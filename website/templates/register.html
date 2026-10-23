@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Sign Up</h2>
+
+{% if error %}
+<div class="error-box">{{ error }}</div>
+{% endif %}
+
+<div id="js-error" class="error-box d-none"></div>
+
+<form method="POST" action="/register" id="registerForm">
+    <div class="form-group">
+        <label>Name</label>
+        <input type="text" name="name" id="name">
+    </div>
+
+    <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" id="email">
+    </div>
+
+    <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password" id="password">
+    </div>
+
+    <div class="form-group">
+        <label>Confirm Password</label>
+        <input type="password" name="confirm_password" id="confirm_password">
+    </div>
+
+    <button type="submit">Register</button>
+</form>
+
+<div style="text-align: center; margin-top: 20px;">
+    <a href="/login">Log in</a>
+</div>
+
+<script>
+    document.getElementById('registerForm').addEventListener('submit', function (e) {
+        let name = document.getElementById('name').value.trim();
+        let email = document.getElementById('email').value.trim();
+        let password = document.getElementById('password').value;
+        let confirm_password = document.getElementById('confirm_password').value;
+        let errorBox = document.getElementById('js-error');
+
+        let errorMessage = "";
+
+        if (!name) errorMessage = "Name is required";
+        else if (!email) errorMessage = "Email is required";
+        else if (!password) errorMessage = "Password is required";
+        else if (!confirm_password) errorMessage = "Confirm password is required";
+        else if (password !== confirm_password) errorMessage = "Passwords do not match";
+
+        if (errorMessage) {
+            e.preventDefault();
+            errorBox.textContent = errorMessage;
+            errorBox.classList.remove('d-none');
+        }
+    });
+</script>
+{% endblock %}

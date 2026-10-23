@@ -1,0 +1,159 @@
+body {
+    background-color: #e2e8f0;
+    color: #1e293b;
+    display: flex;
+    justify-content: center;
+    padding-top: 60px;
+    margin: 0;
+}
+
+
+.container {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 550px;
+}
+
+
+h2 {
+    margin-top: 0;
+    border-bottom: 2px solid #cbd5e1;
+    padding-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+a {
+    color: #475569;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+a:hover {
+    color: #0f172a;
+    text-decoration: underline;
+}
+
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+    font-weight: 600;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #94a3b8;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: #475569;
+}
+
+
+button {
+    background-color: #334155;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #0f172a;
+}
+
+
+.todo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.todo-form-group {
+    display: flex;
+    flex-grow: 1;
+    gap: 10px;
+}
+
+.todo-form-group input[type="text"] {
+    margin: 0;
+}
+
+.todo-form-group button {
+    width: auto;
+}
+
+.btn-delete {
+    background-color: #991b1b;
+    width: auto;
+}
+
+.btn-delete:hover {
+    background-color: #7f1d1d;
+}
+
+.done-text {
+    text-decoration: line-through;
+    color: #94a3b8;
+}
+
+.badge {
+    background-color: #475569;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.6em;
+    vertical-align: middle;
+}
+
+
+.error-box {
+    background-color: #fee2e2;
+    color: #991b1b;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    border: 1px solid #f87171;
+}
+
+.d-none {
+    display: none !important;
+}

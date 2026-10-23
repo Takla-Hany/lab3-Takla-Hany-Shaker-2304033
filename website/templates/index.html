@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="todo-header">
+    <h2 style="border: none; margin: 0; padding: 0;">
+        To-Do <span class="badge">{{ open_count }} open</span>
+    </h2>
+    <div>
+        <span style="margin-right: 15px;">Hi, {{ user_name }}</span>
+        <a href="/logout">Log out</a>
+    </div>
+</div>
+
+{% if error %}
+<div class="error-box">{{ error }}</div>
+{% endif %}
+
+<div id="js-error" class="error-box d-none"></div>
+
+<form method="POST" action="/add" id="addForm" style="display: flex; gap: 10px; margin-bottom: 20px;">
+    <input type="text" name="title" id="addTitle" style="margin: 0; flex-grow: 1;">
+    <button type="submit" style="width: auto;">Add</button>
+</form>
+
+{% if todos %}
+<ul>
+    {% for todo in todos %}
+    <li>
+        <form method="POST" action="/toggle/{{ todo.todo_id }}" style="margin: 0;">
+            <input type="hidden" name="is_done" value="{{ 0 if todo.is_done else 1 }}">
+            <input type="checkbox" onchange="this.form.submit()" {% if todo.is_done %}checked{% endif %}>
+        </form>
+
+
+        <form method="POST" action="/edit/{{ todo.todo_id }}" class="todo-form-group edit-form" style="margin: 0;">
+            <input type="text" name="title" value="{{ todo.title }}" class="{% if todo.is_done %}done-text{% endif %}">
+            <button type="submit">Save</button>
+        </form>
+
+
+        <form method="POST" action="/delete/{{ todo.todo_id }}" onsubmit="return confirm('Are you sure?');"
+            style="margin: 0;">
+            <button type="submit" class="btn-delete">Delete</button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<div style="text-align: center; color: #64748b; padding: 20px;">
+    The list is empty.
+</div>
+{% endif %}
+
+<script>
+    document.getElementById('addForm').addEventListener('submit', function (e) {
+        let title = document.getElementById('addTitle').value.trim();
+        let errorBox = document.getElementById('js-error');
+        if (!title) {
+            e.preventDefault();
+            errorBox.textContent = "Title is required";
+            errorBox.classList.remove('d-none');
+        } else if (title.length > 200) {
+            e.preventDefault();
+            errorBox.textContent = "Title is too long (200 characters at most)";
+            errorBox.classList.remove('d-none');
+        }
+    });
+
+
+    document.querySelectorAll('.edit-form').forEach(function (form) {
+        form.addEventListener('submit', function (e) {
+            let title = form.querySelector('input[name="title"]').value.trim();
+            let errorBox = document.getElementById('js-error');
+            if (!title) {
+                e.preventDefault();
+                errorBox.textContent = "Title is required";
+                errorBox.classList.remove('d-none');
+            } else if (title.length > 200) {
+                e.preventDefault();
+                errorBox.textContent = "Title is too long (200 characters at most)";
+                errorBox.classList.remove('d-none');
+            }
+        });
+    });
+</script>
+{% endblock %}
