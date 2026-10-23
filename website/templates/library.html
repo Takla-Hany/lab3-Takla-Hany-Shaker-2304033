@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="todo-header">
+    <h2 style="border: none; margin: 0; padding: 0;">Library Management</h2>
+</div>
+
+
+<h3>Authors</h3>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Country</th>
+        <th>Actions</th>
+    </tr>
+
+    {% for author in authors %}
+
+    <tr>
+        <td>{{ author.author_id }}</td>
+        <td>{{ author.name }}</td>
+        <td>{{ author.country }}</td>
+        <td style="display: flex; gap: 5px;">
+            <a href="/edit_author/{{ author.author_id }}" class="btn-edit">Edit</a>
+            <form method="POST" action="/delete_author/{{ author.author_id }}" style="margin: 0;"
+                onsubmit="return confirm('Delete author and all their books?');">
+                <button type="submit" class="btn-delete" style="padding: 5px 10px; font-size: 0.85em;">Delete</button>
+            </form>
+        </td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<form method="POST" action="/add_author" style="display: flex; gap: 10px; margin-bottom: 40px;">
+    <input type="text" name="name" placeholder="Author Name" required style="flex-grow: 1;">
+    <input type="text" name="country" placeholder="Country" required style="flex-grow: 1;">
+    <button type="submit" style="width: auto;">Add Author</button>
+</form>
+
+
+<h3>Books</h3>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Price</th>
+        <th>Author ID</th>
+        <th>Actions</th>
+    </tr>
+
+    {% for book in books %}
+
+    <tr>
+        <td>{{ book.book_id }}</td>
+        <td>{{ book.title }}</td>
+        <td>${{ book.price }}</td>
+        <td>{{ book.author_id }}</td>
+        <td style="display: flex; gap: 5px;">
+            <a href="/edit_book/{{ book.book_id }}" class="btn-edit">Edit</a>
+            <form method="POST" action="/delete_book/{{ book.book_id }}" style="margin: 0;"
+                onsubmit="return confirm('Are you sure?');">
+                <button type="submit" class="btn-delete" style="padding: 5px 10px; font-size: 0.85em;">Delete</button>
+            </form>
+        </td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<form method="POST" action="/add_book" style="display: flex; gap: 10px; margin-bottom: 20px;">
+    <input type="text" name="title" placeholder="Book Title" required style="flex-grow: 2;">
+    <input type="number" step="0.01" name="price" placeholder="Price" required style="flex-grow: 1;">
+    <select name="author_id" required
+        style="flex-grow: 1; border: 1px solid #94a3b8; border-radius: 4px; padding: 10px;">
+        <option value="" disabled selected>Select Author</option>
+        {% for author in authors %}
+        <option value="{{ author.author_id }}">{{ author.name }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit" style="width: auto;">Add Book</button>
+</form>
+{% endblock %}

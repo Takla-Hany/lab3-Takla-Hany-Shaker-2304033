@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Edit Book</h2>
+
+<form method="POST" action="/edit_book/{{ book.book_id }}">
+
+    <div class="form-group">
+        <label>Title</label>
+        <input type="text" name="title" value="{{ book.title }}" required>
+    </div>
+
+    <div class="form-group">
+        <label>Price</label>
+        <input type="number" step="0.01" name="price" value="{{ book.price }}" required
+            style="width: 100%; padding: 10px; border: 1px solid #94a3b8; border-radius: 4px;">
+    </div>
+
+    <div class="form-group">
+        <label>Author</label>
+
+        <select name="author_id" required
+            style="width: 100%; padding: 10px; border: 1px solid #94a3b8; border-radius: 4px;">
+
+            {% for author in authors %}
+            <option value="{{ author.author_id }}" {% if author.author_id==book.author_id %}selected{% endif %}>{{
+                author.name }}</option>
+            {% endfor %}
+
+        </select>
+    </div>
+
+    <button type="submit">Save Changes</button>
+
+</form>
+
+<div style="text-align: center; margin-top: 15px;">
+    <a href="/library">Cancel</a>
+</div>
+
+{% endblock %}
