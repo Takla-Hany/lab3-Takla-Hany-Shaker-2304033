@@ -294,8 +294,19 @@ def edit_book(id):
             title = request.form.get('title')
             price = request.form.get('price')
             author_id = request.form.get('author_id')
-            with connection.cursor() as cursor:
-                cursor.execute("UPDATE BOOK SET title=%s, price=%s, author_id=%s WHERE book_id=%s", (title, price, author_id, id))
+            
+            # Handle potential new image upload
+            image = request.files.get('image')
+            if image and image.filename:
+                filename = secure_filename(image.filename)
+                image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                with connection.cursor() as cursor:
+                    cursor.execute("UPDATE BOOK SET title=%s, price=%s, author_id=%s, image_filename=%s WHERE book_id=%s", (title, price, author_id, filename, id))
+            else:
+                # Update without changing the image
+                with connection.cursor() as cursor:
+                    cursor.execute("UPDATE BOOK SET title=%s, price=%s, author_id=%s WHERE book_id=%s", (title, price, author_id, id))
+                    
             connection.commit()
             return redirect(url_for('library'))
         
@@ -316,8 +327,19 @@ def edit_author(id):
         if request.method == 'POST':
             name = request.form.get('name')
             country = request.form.get('country')
-            with connection.cursor() as cursor:
-                cursor.execute("UPDATE AUTHOR SET name=%s, country=%s WHERE author_id=%s", (name, country, id))
+            
+            # Handle potential new image upload
+            image = request.files.get('image')
+            if image and image.filename:
+                filename = secure_filename(image.filename)
+                image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                with connection.cursor() as cursor:
+                    cursor.execute("UPDATE AUTHOR SET name=%s, country=%s, image_filename=%s WHERE author_id=%s", (name, country, filename, id))
+            else:
+                # Update without changing the image
+                with connection.cursor() as cursor:
+                    cursor.execute("UPDATE AUTHOR SET name=%s, country=%s WHERE author_id=%s", (name, country, id))
+                    
             connection.commit()
             return redirect(url_for('library'))
         

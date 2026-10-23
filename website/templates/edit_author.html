@@ -2,8 +2,7 @@
 {% block content %}
 
 <h2>Edit Author</h2>
-<form method="POST" action="/edit_author/{{ author.author_id }}">
-
+<form method="POST" action="/edit_author/{{ author.author_id }}" enctype="multipart/form-data">
     <div class="form-group">
         <label>Name</label>
         <input type="text" name="name" value="{{ author.name }}" required>
@@ -12,6 +11,23 @@
     <div class="form-group">
         <label>Country</label>
         <input type="text" name="country" value="{{ author.country }}" required>
+    </div>
+
+    <div class="form-group">
+        <label>Current Photo</label>
+
+        {% if author.image_filename %}
+        <div style="margin-bottom: 10px;">
+            <img src="{{ url_for('static', filename='uploads/' ~ author.image_filename) }}" alt="Photo"
+                style="width: 100px; height: 100px; object-fit: cover; border-radius: 4px;">
+        </div>
+        {% else %}
+        <div style="color: #94a3b8; font-size: 0.85em; margin-bottom: 10px;">No image uploaded</div>
+        {% endif %}
+
+        <label>Upload New Photo (optional)</label>
+        <input type="file" name="image" accept="image/*"
+            style="width: 100%; padding: 10px; border: 1px solid #94a3b8; border-radius: 4px; background: white;">
     </div>
 
     <button type="submit">Save Changes</button>
