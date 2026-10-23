@@ -19,7 +19,7 @@
 2. Create and activate the Conda environment: `conda create -n lab3-flask python=3.11 -y` and `conda activate lab3-flask`.
 3. Install dependencies: `pip install -r requirements.txt`.
 4. Run the Lab 2 database script `database/registration.sql` from the previous lab to build the `registration` database.
-5. Run the Lab 3 database script `database/library.sql` from the previous lab to build the `library` database.
+5. Run the Lab 3 database script `database/library.sql` to build the `library` database.
 6. Navigate into the `website/` folder.
 7. Copy `.env.example` to `.env` and configure your MySQL credentials.
 8. Start the server: `flask run`.
@@ -28,3 +28,4 @@
 ## Features Built
 * **Problem 1:** Implemented the COMPANY schema with circular foreign key dependencies using `ALTER TABLE`.
 * **Problem 2 (F2.1 - F2.5):** Implemented the Library relational schema. and edited the web application to view, add, edit, and delete Authors and Books using SQL `SELECT`, `INSERT`, `UPDATE`, and `DELETE` statements.
+* **Problem 2 (Bonus):** Implemented Image Upload Feature.
