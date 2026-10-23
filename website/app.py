@@ -2,10 +2,14 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, session
 import bcrypt
 import pymysql
+from werkzeug.utils import secure_filename
 from db import get_db_connection, get_library_connection
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "fallback_dev_key")
+
+app.config['UPLOAD_FOLDER'] = os.path.join('static', 'uploads')
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -242,10 +246,18 @@ def add_book():
     title = request.form.get('title')
     price = request.form.get('price')
     author_id = request.form.get('author_id')
+    
+    # Handle image upload
+    image = request.files.get('image')
+    filename = None
+    if image and image.filename:
+        filename = secure_filename(image.filename)
+        image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        
     connection = get_library_connection()
     try:
         with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO BOOK (title, price, author_id) VALUES (%s, %s, %s)", (title, price, author_id))
+            cursor.execute("INSERT INTO BOOK (title, price, author_id, image_filename) VALUES (%s, %s, %s, %s)", (title, price, author_id, filename))
         connection.commit()
     finally:
         connection.close()
@@ -256,10 +268,18 @@ def add_book():
 def add_author():
     name = request.form.get('name')
     country = request.form.get('country')
+    
+    # Handle image upload
+    image = request.files.get('image')
+    filename = None
+    if image and image.filename:
+        filename = secure_filename(image.filename)
+        image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        
     connection = get_library_connection()
     try:
         with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO AUTHOR (name, country) VALUES (%s, %s)", (name, country))
+            cursor.execute("INSERT INTO AUTHOR (name, country, image_filename) VALUES (%s, %s, %s)", (name, country, filename))
         connection.commit()
     finally:
         connection.close()
