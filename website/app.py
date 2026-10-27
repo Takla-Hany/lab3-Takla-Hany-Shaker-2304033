@@ -256,7 +256,7 @@ def add_book():
         
     connection = get_library_connection()
     try:
-        if int(price) >= 0:
+        if float(price) >= 0:
             with connection.cursor() as cursor:
                 cursor.execute("INSERT INTO BOOK (title, price, author_id, image_filename) VALUES (%s, %s, %s, %s)", (title, price, author_id, filename))
             connection.commit()
