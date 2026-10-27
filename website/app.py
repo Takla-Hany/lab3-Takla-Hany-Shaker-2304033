@@ -250,15 +250,16 @@ def add_book():
     # Handle image upload
     image = request.files.get('image')
     filename = None
-    if image and image.filename:
+    if image and image.filename and image.filename.split('.')[1].lower() in ['png', 'jpeg','jpg','webp']:
         filename = secure_filename(image.filename)
         image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         
     connection = get_library_connection()
     try:
-        with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO BOOK (title, price, author_id, image_filename) VALUES (%s, %s, %s, %s)", (title, price, author_id, filename))
-        connection.commit()
+        if int(price) >= 0:
+            with connection.cursor() as cursor:
+                cursor.execute("INSERT INTO BOOK (title, price, author_id, image_filename) VALUES (%s, %s, %s, %s)", (title, price, author_id, filename))
+            connection.commit()
     finally:
         connection.close()
     return redirect(url_for('library'))
@@ -272,7 +273,7 @@ def add_author():
     # Handle image upload
     image = request.files.get('image')
     filename = None
-    if image and image.filename:
+    if image and image.filename and image.filename.split('.')[1].lower() in ['png', 'jpeg','jpg','webp']:
         filename = secure_filename(image.filename)
         image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         
@@ -297,7 +298,7 @@ def edit_book(id):
             
             # Handle potential new image upload
             image = request.files.get('image')
-            if image and image.filename:
+            if image and image.filename and image.filename.split('.')[1].lower() in ['png', 'jpeg','jpg','webp']:
                 filename = secure_filename(image.filename)
                 image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 with connection.cursor() as cursor:
@@ -330,7 +331,7 @@ def edit_author(id):
             
             # Handle potential new image upload
             image = request.files.get('image')
-            if image and image.filename:
+            if image and image.filename and image.filename.split('.')[1].lower() in ['png', 'jpeg','jpg','webp']:
                 filename = secure_filename(image.filename)
                 image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 with connection.cursor() as cursor:
